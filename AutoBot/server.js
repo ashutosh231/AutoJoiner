@@ -28,7 +28,6 @@ let credentials = {
 };
 
 let cronJob = null;
-let dailyCheckJob = null; // Daily 7 PM force check
 let botEnabled = true;
 
 // Middleware
@@ -217,25 +216,15 @@ function startCronJob() {
     return;
   }
 
-  // Run every 2 minutes, Monday-Saturday, 8 AM to 10 PM IST
-  cronJob = cron.schedule('*/2 8-22 * * 1-6', async () => {
+  // Run every 2 minutes
+  cronJob = cron.schedule('*/2 * * * *', async () => {
     bot.log('⏰ Scheduled check triggered.');
     await bot.checkAndJoin(credentials.regNumber, credentials.password);
   }, {
     timezone: 'Asia/Kolkata'
   });
 
-  bot.log('Cron job started — checking every 2 min (Mon-Sat, 8AM-10PM IST).');
-
-  // Daily force check at 7 PM (19:00) IST
-  dailyCheckJob = cron.schedule('0 19 * * *', async () => {
-    bot.log('⏰ Daily 7 PM force check triggered.');
-    await bot.checkAndJoin(credentials.regNumber, credentials.password);
-  }, {
-    timezone: 'Asia/Kolkata'
-  });
-
-  bot.log('Daily 7 PM force check scheduled.');
+  bot.log('Cron job started — checking every 2 min.');
 }
 
 function stopCronJob() {
@@ -243,11 +232,6 @@ function stopCronJob() {
     cronJob.stop();
     cronJob = null;
     bot.log('Cron job stopped.');
-  }
-  if (dailyCheckJob) {
-    dailyCheckJob.stop();
-    dailyCheckJob = null;
-    bot.log('Daily 7 PM check stopped.');
   }
 }
 
