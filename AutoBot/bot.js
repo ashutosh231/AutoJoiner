@@ -69,7 +69,7 @@ class AutoClassBot {
     process.env.PUPPETEER_CACHE_DIR = cacheDir;
 
     this.log(`Installing Puppeteer managed Chrome at runtime (cache: ${cacheDir})...`, 'warn');
-    execSync('npx puppeteer browsers install chrome', {
+    execSync('npx puppeteer browsers install chrome@147.0.7727.116', {
       stdio: 'pipe',
       env: {
         ...process.env,

@@ -23,7 +23,7 @@ COPY package*.json ./
 RUN npm ci --only=production
 
 # Also install Puppeteer's managed Chrome to avoid runtime missing-browser errors
-RUN npx puppeteer browsers install chrome
+RUN npx puppeteer browsers install chrome@147.0.7727.116
 
 # Copy app source
 COPY . .
